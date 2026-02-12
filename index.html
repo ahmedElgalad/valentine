@@ -16,34 +16,36 @@
       overflow-x: hidden; 
       background: #000;
       width: 100%;
-      position: fixed; /* يمنع الارتداد في الموبايل */
+      position: fixed;
       height: 100%;
+    }
+
+    /* شاشة البداية لتفعيل الصوت */
+    #start-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000; z-index: 999; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      transition: 0.5s;
     }
 
     .page { 
       position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
+      top: 0; left: 0; width: 100%; height: 100%; 
       display: none; 
       overflow-y: auto; 
-      -webkit-overflow-scrolling: touch; /* تمرير ناعم للايفون */
+      -webkit-overflow-scrolling: touch; 
       transition: all 0.5s ease;
     }
     .page.active { display: flex; flex-direction: column; align-items: center; }
 
     /* PAGE 1: HEART BEAT */
     #page1 { background: radial-gradient(circle at 50% 50%, #4a000e 0%, #000 100%); justify-content: center; z-index: 10; padding: 20px; }
-    
     .heart-container { position: relative; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
-    
     .pulse-ring {
       position: absolute; width: 60px; height: 60px; border: 2px solid var(--primary);
-      border-radius: 50%; animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      border-radius: 50%; animation: pulse-ring 1.5s infinite;
     }
     @keyframes pulse-ring { 0% { transform: scale(.33); opacity: 1; } 80%, 100% { transform: scale(2.5); opacity: 0; } }
-
     .fantasy-heart { 
       position: relative; width: 60px; height: 60px; background: var(--primary); 
       transform: rotate(-45deg); box-shadow: 0 0 30px var(--primary);
@@ -52,65 +54,69 @@
     .fantasy-heart::before, .fantasy-heart::after { content: ''; position: absolute; width: 60px; height: 60px; background: inherit; border-radius: 50%; }
     .fantasy-heart::before { top: -30px; left: 0; }
     .fantasy-heart::after { left: 30px; top: 0; }
-    
-    @keyframes heartBeat {
-      0% { transform: rotate(-45deg) scale(0.8); }
-      15% { transform: rotate(-45deg) scale(1.1); }
-      30% { transform: rotate(-45deg) scale(0.8); }
-    }
+    @keyframes heartBeat { 0% { transform: rotate(-45deg) scale(0.8); } 15% { transform: rotate(-45deg) scale(1.1); } 30% { transform: rotate(-45deg) scale(0.8); } }
 
     /* PAGE 2: GALLERY */
     #page2 { background: #1a0000; z-index: 5; overflow: hidden; }
-    .timer-display { position: absolute; top: 20px; background: var(--secondary); padding: 5px 20px; border-radius: 20px; font-weight: bold; z-index: 100; font-size: 1.2rem; }
-    .popup-image { position: absolute; width: 110px; height: 140px; border: 3px solid white; border-radius: 5px; opacity: 0; transform: scale(0); transition: 0.8s; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+    .timer-display { position: absolute; top: 20px; background: var(--secondary); padding: 5px 20px; border-radius: 20px; font-weight: bold; z-index: 100; font-size: 1.5rem; box-shadow: 0 0 15px var(--primary); }
+    
+    .popup-image { 
+      position: absolute; 
+      width: 160px; height: 210px; 
+      border: 4px solid white; border-radius: 10px; 
+      opacity: 0; transform: scale(0); 
+      transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      object-fit: cover; box-shadow: 0 15px 30px rgba(0,0,0,0.7); 
+    }
     .popup-image.visible { opacity: 1; transform: scale(1) rotate(var(--r)); }
 
     /* PAGE 3: FINALE */
     #page3 { position: relative; background: linear-gradient(to bottom, #2d0006, #000); display: none; padding-bottom: 60px; position: absolute; height: 100vh; overflow-y: scroll; }
     .hero-banner { padding: 40px 20px; text-align: center; width: 100%; }
-    .hero-banner h1 { font-size: 1.5rem; color: var(--gold); margin-bottom: 10px; }
-
-    .counter-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 20px; border-radius: 25px; border: 1px solid rgba(249, 212, 35, 0.3); margin: 10px; text-align: center; width: 90%; }
-    .days-num { font-size: 3rem; font-weight: 800; color: var(--gold); display: block; }
-
+    .hero-banner h1 { font-size: 1.8rem; color: var(--gold); margin-bottom: 10px; text-shadow: 0 0 10px rgba(249, 212, 35, 0.5); }
+    .counter-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 25px; border-radius: 25px; border: 1px solid rgba(249, 212, 35, 0.3); margin: 15px; text-align: center; width: 90%; }
+    .days-num { font-size: 3.5rem; font-weight: 800; color: var(--gold); display: block; }
     .promise-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 15px; border-radius: 20px; width: 90%; margin: 15px; border: 1px solid rgba(255, 255, 255, 0.1); }
-    .promise-item { 
-      background: rgba(255, 78, 80, 0.12); margin: 10px 0; padding: 15px; 
-      border-radius: 12px; border-right: 4px solid var(--primary);
-      font-size: 0.85rem; line-height: 1.5; color: #fff;
-      opacity: 0; animation: fadeIn 0.8s ease forwards;
-    }
+    .promise-item { background: rgba(255, 78, 80, 0.12); margin: 12px 0; padding: 18px; border-radius: 15px; border-right: 5px solid var(--primary); font-size: 1rem; color: #fff; opacity: 0; animation: fadeIn 0.8s ease forwards; }
     @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
     .petal { position: absolute; pointer-events: none; z-index: 100; animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
 
-    /* UI ELEMENTS */
     input[type="password"] { 
-      width: 100%; max-width: 280px; padding: 12px; border-radius: 25px; 
+      width: 100%; max-width: 280px; padding: 15px; border-radius: 30px; 
       border: 2px solid var(--primary); background: rgba(255,255,255,0.1); 
-      color: white; text-align: center; margin-bottom: 20px; font-size: 1rem; outline: none;
+      color: white; text-align: center; margin-bottom: 20px; font-size: 1.1rem; outline: none;
     }
     .btn-love { 
-      padding: 12px 35px; border-radius: 25px; 
+      padding: 15px 40px; border-radius: 30px; 
       background: linear-gradient(45deg, var(--primary), var(--secondary)); 
-      border: none; color: white; font-weight: bold; font-size: 1rem; cursor: pointer;
+      border: none; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer;
       box-shadow: 0 4px 15px rgba(255, 78, 80, 0.4);
     }
-    .btn-love:active { transform: scale(0.95); }
   </style>
 </head>
 <body>
 
-  <div id="page1" class="page active">
+  <audio id="clickSound" loop src="brvhrtz-heartbeat-02-225103.mp3"></audio>
+
+  <div id="start-overlay">
+    <div class="heart-container" style="cursor: pointer;" onclick="initSounds()">
+      <div class="pulse-ring"></div>
+      <div class="fantasy-heart"></div>
+    </div>
+    <p style="margin-top: 20px; color: var(--primary);">اضغطي على القلب يا ملكتي 💘</p>
+  </div>
+
+  <div id="page1" class="page">
     <div class="heart-container">
       <div class="pulse-ring"></div>
       <div class="fantasy-heart"></div>
     </div>
     <div style="text-align:center; width: 100%; max-width: 320px;">
-      <h2 style="color: #ff4e50; font-size: 1.5rem;">💓 مـلـكـة قـلـبـي 💓</h2>
-      <p style="margin: 15px 0 25px; color: #ffcccc; line-height: 1.6; font-size: 0.9rem;">
-        هذا القلب لا ينبض إلا باسمك، ولا يرى في الدنيا غيرك..<br>
+      <h2 style="color: #ff4e50; font-size: 1.8rem;">💓 مـلـكـة قـلـبي 💓</h2>
+      <p style="margin: 15px 0 25px; color: #ffcccc; line-height: 1.6;">
+        هذا القلب لا ينبض إلا باسمك..<br>
         قلبي ملكك ليكي لوحدك 
       </p>
       <input type="password" id="pass" placeholder="بتحبي اناديكي ب ايه؟" autocomplete="off">
@@ -120,76 +126,97 @@
   </div>
 
   <div id="page2" class="page">
-    <div class="timer-display" id="timer">120</div>
+    <div class="timer-display" id="timer">95</div>
+      <audio id="clickSound" loop src="04_-_Layla (mp3cut.net).mp3"></audio>
+
     <div id="gallery">
-              <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (4).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (1).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (2).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (4).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (5).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (6).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM.jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.11 AM (1).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.11 AM.jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.11 AM (4).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.11 AM (3).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.11 AM (2).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (1).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (2).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (3).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (4).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (5).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (6).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (7).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM (8).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.12 AM.jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (1).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (2).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (3).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (5).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (6).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.14 AM (1).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.14 AM (2).jpeg">
-        <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.14 AM (3).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.14 AM (4).jpeg">
-      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.14 AM.jpeg">
-    </div>
+      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.13 AM (4).jpeg">
+      <img class="popup-image" src="WhatsApp Image 2026-02-12 at 5.12.10 AM (1).jpeg">
+      </div>
   </div>
 
   <div id="page3" class="page">
     <div id="petals"></div>
     <div class="hero-banner">
       <h1>كل عيد حب وأنتِ حياتي 🌹</h1>
-      <p style="font-size: 0.85rem; opacity: 0.8;">أنتِ نعمة الله التي أكتفي بها</p>
     </div>
-
     <div class="counter-box">
-        <span style="font-size: 0.75rem; opacity: 0.7;">منذ أن بدأ نبضي بكِ (6 نوفمبر 2025)</span>
         <span class="days-num" id="daysCount">0</span>
-        <span style="font-size: 0.9rem;">يومـاً من الحـب ❤️</span>
+        <span>يومـاً من الحـب ❤️</span>
     </div>
-
     <div class="promise-card">
-        <h3 style="color:var(--gold); margin-bottom:15px; text-align:center; font-size: 1.1rem;">وعـود قـلـبي ليكي ✨</h3>
         <div class="promise-list">
-            <div class="promise-item" style="animation-delay: 0.2s;">1- احبك واحبك واحبك وافضل طول عمري احبك</div>
-            <div class="promise-item" style="animation-delay: 0.4s;">2- مش هبعد عنك وافضل لازق فيكي ومش هسيبك ابدا ابدا ابدا</div>
-            <div class="promise-item" style="animation-delay: 0.6s;">3- انتي مش بس حبيبتي وكمان بنتي وروحي وحياتي ودنيتي و قرة عيني واغلي ما ليا</div>
-            <div class="promise-item" style="animation-delay: 0.8s;">4- هفضل حنين عليكي طول العمر واسمع صياحك و جنانك وشخصياتك الاربعة</div>
-            <div class="promise-item" style="animation-delay: 1.0s;">5- امانك وسندك</div>
+            <div class="promise-item">1- احبك واحبك واحبك وافضل طول عمري احبك</div>
+            <div class="promise-item">2- مش هبعد عنك وافضل لازق فيكي ومش هسيبك ابدا</div>
         </div>
-    </div>
-
-    <div style="padding: 20px; text-align:center; width: 100%;">
-        <p style="font-style:italic; font-size:0.85rem; line-height:1.6; color: #ffcccc; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; margin-bottom: 20px;">
-            "يقولون إن الحب يقل مع الوقت، أما أنا فأغرق بكِ يوماً بعد يوم.. أنتِ لستِ فقط حبيبتي، أنتِ دنيتي التي أعيشها."
-        </p>
-        <button class="btn-love" onclick="location.reload()">أحبكِ للأبد ❤️</button>
     </div>
   </div>
 
   <script>
-    // حساب الأيام بشكل تصاعدي جذاب
+    const clickSound = document.getElementById('clickSound');
+    const popSound = document.getElementById('popSound');
+
+    // دالة تفعيل الصوت عند أول لمسة
+    function initSounds() {
+        // تشغيل صوت نبض القلب فوراً
+        clickSound.play();
+        // إخفاء شاشة الدخول وإظهار صفحة الباسورد
+        document.getElementById('start-overlay').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('start-overlay').style.display = 'none';
+            document.getElementById('page1').style.display = 'flex';
+            document.getElementById('page1').classList.add('active');
+        }, 500);
+    }
+
+    function check() {
+        const p = document.getElementById('pass').value.trim();
+        if(['حبيبتي', 'حبيبتى', 'قلبي'].includes(p)) {
+            document.body.style.position = 'relative';
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            document.getElementById('page2').classList.add('active');
+            startGallery();
+        } else { alert("حاولي تاني يا روح قلبي ❤️"); }
+    }
+
+    function startGallery() {
+        const imgs = document.querySelectorAll('.popup-image');
+        let time = 120;
+        document.getElementById('timer').innerText = time;
+        const intervalGap = (time * 1000) / imgs.length;
+
+        imgs.forEach((img, i) => {
+            setTimeout(() => {
+                const x = Math.random() * (window.innerWidth - 170);
+                const y = Math.random() * (window.innerHeight - 250) + 60;
+                img.style.left = x + 'px';
+                img.style.top = y + 'px';
+                img.style.setProperty('--r', (Math.random()*30-15)+'deg');
+                img.classList.add('visible');
+                
+                const s = popSound.cloneNode();
+                s.volume = 0.4;
+                s.play();
+            }, i * (intervalGap * 0.8));
+        });
+        
+        const timer = setInterval(() => {
+            time--;
+            document.getElementById('timer').innerText = time;
+            if(time <= 0) { clearInterval(timer); showFinal(); }
+        }, 1000);
+    }
+
+    function showFinal() {
+        document.getElementById('page2').style.display = 'none';
+        const p3 = document.getElementById('page3');
+        p3.style.display = 'block';
+        p3.classList.add('active');
+        calculateDays();
+        createPetals();
+    }
+
     function calculateDays() {
         const start = new Date('2025-11-06');
         const end = new Date('2026-02-13');
@@ -201,66 +228,18 @@
         }, 30);
     }
 
-    // التحقق من كلمة السر
-    function check() {
-        const p = document.getElementById('pass').value.trim();
-        if(['حبيبتي', 'حبيبتى', 'قلبي'].includes(p)) {
-            document.body.style.position = 'relative'; // استعادة التمرير
-            document.getElementById('page1').style.display = 'none';
-            document.getElementById('page2').style.display = 'block';
-            document.getElementById('page2').classList.add('active');
-            startGallery();
-        } else { alert("حاولي تاني يا روح قلبي ❤️"); }
-    }
-
-    // معرض الصور العشوائي
-    function startGallery() {
-        const imgs = document.querySelectorAll('.popup-image');
-        let time = 25;
-        imgs.forEach((img, i) => {
-            setTimeout(() => {
-                // ضبط مكان الصور ليبقى داخل الشاشة في الموبايل
-                const x = Math.random() * (window.innerWidth - 120);
-                const y = Math.random() * (window.innerHeight - 200) + 60;
-                img.style.left = x + 'px';
-                img.style.top = y + 'px';
-                img.style.setProperty('--r', (Math.random()*30-15)+'deg');
-                img.classList.add('visible');
-            }, i * 3500);
-        });
-        
-        const timer = setInterval(() => {
-            time--;
-            document.getElementById('timer').innerText = time;
-            if(time <= 0) { clearInterval(timer); showFinal(); }
-        }, 1000);
-    }
-
-    // الصفحة النهائية
-    function showFinal() {
-        document.getElementById('page2').style.display = 'none';
-        const p3 = document.getElementById('page3');
-        p3.style.display = 'block';
-        p3.classList.add('active');
-        calculateDays();
-        createPetals();
-    }
-
-    // تساقط القلوب
     function createPetals() {
         const container = document.getElementById('petals');
-        for(let i=0; i<20; i++) {
+        for(let i=0; i<25; i++) {
             const p = document.createElement('div');
             p.className = 'petal';
             p.innerHTML = '❤️';
             p.style.left = Math.random() * 95 + 'vw';
             p.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            p.style.fontSize = (Math.random() * 10 + 15) + 'px';
-            p.style.opacity = Math.random() * 0.7 + 0.3;
+            p.style.fontSize = (Math.random() * 10 + 20) + 'px';
             container.appendChild(p);
         }
     }
   </script>
 </body>
 </html>
-
